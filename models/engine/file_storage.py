@@ -57,7 +57,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         """
-        Delete dictioonary from file
+        Delete dictionary from file
         """
         if obj == None:
             return
