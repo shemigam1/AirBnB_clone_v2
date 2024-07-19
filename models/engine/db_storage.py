@@ -4,6 +4,11 @@ from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
+from models.review import Review
+
+
+classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 
@@ -27,26 +32,34 @@ class DBStorage:
 
     def all(self, cls=None):
         """get all objects in db"""
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
-        class_list = []
-        if cls == None:
-            for subclass in Base.__subclasses__():
-                class_list.extend(self.__session.query(subclass).all())
-        else:
-            if isinstance(cls, str):
-                try:
-                    cls = globals()[cls]
-                except KeyError:
-                    pass
-            if issubclass(cls, Base):
-                class_list = self.__session.query(cls).all()
-        class_dict = {}
-        for item in class_list:
-            key = f"{item.__class__.__name__}.{item.id}"
-            class_dict[key] = item
-        return class_dict
+        # Base.metadata.create_all(self.__engine)
+        # Session = sessionmaker(bind=self.__engine)
+        # self.__session = Session()
+        # class_list = []
+        # if cls == None:
+        #     for subclass in Base.__subclasses__():
+        #         class_list.extend(self.__session.query(subclass).all())
+        # else:
+        #     if isinstance(cls, str):
+        #         try:
+        #             cls = globals()[cls]
+        #         except KeyError:
+        #             pass
+        #     if issubclass(cls, Base):
+        #         class_list = self.__session.query(cls).all()
+        # class_dict = {}
+        # for item in class_list:
+        #     key = f"{item.__class__.__name__}.{item.id}"
+        #     class_dict[key] = item
+        # return class_dict
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
     
     def new(self, obj):
         """create new db instances"""
@@ -75,4 +88,4 @@ class DBStorage:
         from models.review import Review
         Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
-        self.__session = Session()
+        self.__session = Session

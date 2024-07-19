@@ -2,7 +2,8 @@
 """ Review module for the HBNB project """
 from models.base_model import BaseModel
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
+import sqlalchemy
 
 
 class Review(BaseModel):
