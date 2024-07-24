@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-
-"""contains Fabric file to deploy web static"""
-
-from fabric.api import local, run, put, env
 import os
+from fabric.api import *
+
 env.hosts = ['100.24.74.22', '54.234.57.164']
+
 
 def do_clean(number=0):
     """Delete out-of-date archives.
