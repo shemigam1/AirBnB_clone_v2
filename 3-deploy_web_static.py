@@ -4,7 +4,7 @@
 
 from datetime import datetime
 from fabric.api import local, run, put, env
-from os.path import exists
+from os.path import exists, isdir
 env.hosts = ['100.24.74.22', '54.234.57.164']
 
 
@@ -12,15 +12,14 @@ def do_pack():
     """
     compress web static
     """
-    try:
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        if isdir('versions') is False:
-            local('mkdir versions')
-        file_name = 'versions/web_static_{}.tgz'.format(date)
-        local('tar -cvzf {} web_static'.format(file_name))
-        return file_name
-    except:
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    if isdir('versions') is False:
+        if local('sudo mkdir -p versions').failed == True:
+            return None
+    file_name = 'versions/web_static_{}.tgz'.format(date)
+    if local('sudo tar -cvzf {} web_static'.format(file_name)).failed == True:
         return None
+    return file_name
 
 def do_deploy(archive_path):
     """
@@ -34,10 +33,10 @@ def do_deploy(archive_path):
         run('sudo mkdir -p {}{}'.format(path, fname))
         run('sudo tar -xvzf /tmp/{} -C {}{}/'.format(fn_ext, path, fname))
         run('sudo rm /tmp/{}'.format(fn_ext))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, fname))
-        run('rm -rf {}{}/web_static'.format(path, fname))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, fname))
+        run('sudo mv {0}{1}/web_static/* {0}{1}/'.format(path, fname))
+        run('sudo rm -rf {}{}/web_static'.format(path, fname))
+        run('sudo rm -rf /data/web_static/current')
+        run('sudo ln -s {}{}/ /data/web_static/current'.format(path, fname))
         return True
     else:
         return False
