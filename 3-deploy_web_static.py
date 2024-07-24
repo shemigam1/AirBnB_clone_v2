@@ -14,12 +14,13 @@ def do_pack():
     """
     date = datetime.now().strftime("%Y%m%d%H%M%S")
     if isdir('versions') is False:
-        if local('sudo mkdir -p versions').failed == True:
+        if local('sudo mkdir -p versions').failed is True:
             return None
     file_name = 'versions/web_static_{}.tgz'.format(date)
-    if local('sudo tar -cvzf {} web_static'.format(file_name)).failed == True:
+    if local('sudo tar -cvzf {} web_static'.format(file_name)).failed is True:
         return None
     return file_name
+
 
 def do_deploy(archive_path):
     """
@@ -41,10 +42,10 @@ def do_deploy(archive_path):
     else:
         return False
 
+
 def deploy():
     """deploy deploy deploy!"""
     archive = do_pack()
-    if archive:
-        return do_deploy(archive)
-    else:
+    if archive is None:
         return False
+    return do_deploy(archive)
