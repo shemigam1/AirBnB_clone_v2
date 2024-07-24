@@ -46,6 +46,10 @@ def do_deploy(archive_path):
 def deploy():
     """deploy deploy deploy!"""
     archive = do_pack()
+    #print('archive-----------{}'.format(archive))
     if archive is None:
+        #print('archive is none')
         return False
-    return do_deploy(archive)
+    dep = do_deploy(archive)
+    #print('deploy value-----{}'.format(dep))
+    return dep
