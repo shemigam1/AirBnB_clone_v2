@@ -13,7 +13,7 @@ def do_deploy(archive_path):
     """
     if exists(archive_path):
         fn_ext = archive_path.split("/")[-1]
-        fname = file_name_ext.split(".")[0]
+        fname = fn_ext.split(".")[0]
         path = "/data/web_static/releases/"
         put(archive_path, "/tmp/")
         run('mkdir -p {}{}'.format(path, fname))
