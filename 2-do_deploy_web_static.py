@@ -22,8 +22,7 @@ def do_deploy(archive_path):
         run('sudo mv {0}{1}/web_static/* {0}{1}/'.format(path, fname))
         run('sudo rm -rf {}{}/web_static'.format(path, fname))
         run('sudo rm -rf /data/web_static/current')
-        cmd = 'sudo ln -s {}{}/ /data/web_static/current'
-        run(cmd.format(path, fname))
+        run('sudo ln -s {}{}/ /data/web_static/current'.format(path, fname))
         return True
     else:
         return False
