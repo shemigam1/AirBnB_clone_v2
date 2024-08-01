@@ -43,7 +43,6 @@ def hello_python(text):
 @app.route("/number/<int:n>")
 def hello_n(n):
     """return if n is int"""
-    #if type(n) == int:
     return "{} is a number".format(n)
 
 
