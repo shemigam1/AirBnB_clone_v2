@@ -5,7 +5,7 @@ module contains flask applications
 """
 
 from flask import Flask
-from markupsafe import escape
+# from markupsafe import escape
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -28,7 +28,8 @@ def hello_hbnb():
 @app.route("/c/<text>")
 def hello_c(text):
     """returns varible text"""
-    return "C {}".format(escape(text))
+    new_text = text.replace("_", " ")
+    return "C {}".format(new_text)
 
 
 if __name__ == "__main__":
