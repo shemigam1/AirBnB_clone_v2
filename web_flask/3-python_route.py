@@ -36,8 +36,6 @@ def hello_c(text):
 @app.route("/python/<text>")
 def hello_python(text):
     """returns varible text"""
-    # if text is None:
-        # text = "is cool"
     new_text = text.replace("_", " ")
     return "Python {}".format(new_text)
 
